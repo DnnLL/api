@@ -1,0 +1,218 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Cash Dispenser API",
+        "description": "API para manejo de depósitos y retiros automáticos",
+        "contact": {
+            "email": "soporte@ejemplo.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/"
+        }
+    ],
+    "paths": {
+        "/deposit": {
+            "post": {
+                "tags": [
+                    "Cash Dispenser"
+                ],
+                "summary": "Depositar billetes a la cuenta",
+                "description": "Permite depositar billetes a una cuenta específica.",
+                "operationId": "deposit",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "account_number",
+                                    "denomination",
+                                    "quantity"
+                                ],
+                                "properties": {
+                                    "account_number": {
+                                        "type": "string",
+                                        "example": "ACC12345"
+                                    },
+                                    "denomination": {
+                                        "type": "integer",
+                                        "example": 50
+                                    },
+                                    "quantity": {
+                                        "type": "integer",
+                                        "example": 10
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Depósito exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Deposit successful."
+                                        },
+                                        "new_balance": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Cuenta o denominación inválida"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/withdraw": {
+            "post": {
+                "tags": [
+                    "Cash Dispenser"
+                ],
+                "summary": "Retirar dinero de la cuenta",
+                "operationId": "652957d2f0cd8e5625cc2bbab1f18e0e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "account_number",
+                                    "amount"
+                                ],
+                                "properties": {
+                                    "account_number": {
+                                        "type": "string",
+                                        "example": "ACC12345"
+                                    },
+                                    "amount": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 150
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retiro exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Withdrawal successful."
+                                        },
+                                        "dispensed_bills": {
+                                            "properties": {
+                                                "50": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "20": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "new_balance": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 350
+                                        },
+                                        "cash_dispenser_memory": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "denomination": {
+                                                        "type": "integer"
+                                                    },
+                                                    "quantity": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Fondos insuficientes o cuenta inválida"
+                    },
+                    "400": {
+                        "description": "No se puede dispensar el monto exacto"
+                    }
+                }
+            }
+        },
+        "/bills": {
+            "get": {
+                "tags": [
+                    "Cash Dispenser"
+                ],
+                "summary": "Obtener el estado actual de los billetes",
+                "operationId": "cc3c2e1a04eb0991ab5164e116875a2b",
+                "responses": {
+                    "200": {
+                        "description": "Listado de billetes con su cantidad disponible",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "denomination": {
+                                                "type": "integer",
+                                                "example": 50
+                                            },
+                                            "quantity": {
+                                                "type": "integer",
+                                                "example": 100
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Cash Dispenser",
+            "description": "Cash Dispenser"
+        }
+    ]
+}
